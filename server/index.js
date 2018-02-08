@@ -44,14 +44,22 @@ app.use(function (req, res, next) {
     next();
 });
 
-User = require('./models/user');
+//User = require('./models/user');
 
 require('./config/passport');
 
-app.use(require('./routes'));
 
 app.get("/", homeController);
 
+
+app.use(require('./routes'));
+
+app.use(function (err, req, res, next) {
+    console.log("ERROR****");
+    if (err.name === 'UnauthorizedError') {
+        res.status(401).send('invalid token...');
+    }
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

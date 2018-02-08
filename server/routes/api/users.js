@@ -1,41 +1,30 @@
 var router = require('express').Router();
+var User = require("../../models/User");
+const Authentication = require("../../controllers/authentication");
+var jwt = require('jsonwebtoken');
+var config = require('../../config');
 
-
-router.post('/users/login', function(req, res, next){
-    console.log("AUTH: ", req.body);
-    try {
-        if(!req.body.user.email){
-            console.log("no email..");
-            return res.status(422).json({errors: {email: "can't be blank"}});
-        }
-        if(!req.body.user.password){
-            console.log("no pass..");
-            return res.status(422).json({errors: {password: "can't be blank"}});
-        }
-    }catch(e){
-        console.log("ERROR: ", e);
-        return res.status(422).json({errors: {server: "Invalid request"}});
+function ensureToken(req, res, next) {
+    const header = req.headers["authorization"];
+    if (typeof header === 'undefined') {
+        return res.sendStatus(403);
     }
-
-    passport.authenticate('local', {session: false}, function(err, user, info){
-        if(err){ return next(err); }
-        user = new User(user.email, user.password);
-        console.log("User: ", user);
-
-        if(user){
-            user.token = user.generateJWT();
-            console.log("token: ", user.token);
-            return res.json({user: user.toAuthJSON()});
+    const bearer = header.split(" ");
+    const bearerToken = bearer[1];
+    req.token = bearerToken;
+    next();
+}
+router.get('/users', ensureToken,  function(req, res) {
+    jwt.verify(req.token, config.secret, function (err, data) {
+        if (err) {
+            res.sendStatus(403);
         } else {
-         return res.status(422).json(info);
+            res.json(req.db.users);
         }
-    })(req, res, next);
-});
+    });
 
-// Get all users
-router.get("/users", function (req, res) {
-    let db = req.db;
-    res.json(db.users);
 });
+router.post('/users/signin', Authentication.signin);
+router.post('/users/signup', Authentication.signup);
 
 module.exports = router;
