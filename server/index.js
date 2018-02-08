@@ -1,7 +1,6 @@
 const express = require("express")
       bodyParser = require("body-parser"),
       cors = require("cors"),
-      passport = require("passport"),
       path = require("path"),
       uuidv4 = require('uuid/v4'),
       errorhandler = require("errorhandler");
@@ -45,8 +44,6 @@ app.use(function (req, res, next) {
 });
 
 //User = require('./models/user');
-
-require('./config/passport');
 
 
 app.get("/", homeController);

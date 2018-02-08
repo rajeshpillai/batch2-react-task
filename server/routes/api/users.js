@@ -1,20 +1,12 @@
 var router = require('express').Router();
 var User = require("../../models/User");
-const Authentication = require("../../controllers/authentication");
+const Authentication = require("../../controllers/users");
 var jwt = require('jsonwebtoken');
 var config = require('../../config');
+const auth = require('../../config/auth');
 
-function ensureToken(req, res, next) {
-    const header = req.headers["authorization"];
-    if (typeof header === 'undefined') {
-        return res.sendStatus(403);
-    }
-    const bearer = header.split(" ");
-    const bearerToken = bearer[1];
-    req.token = bearerToken;
-    next();
-}
-router.get('/users', ensureToken,  function(req, res) {
+
+router.get('/users', auth.ensureToken,  function(req, res) {
     jwt.verify(req.token, config.secret, function (err, data) {
         if (err) {
             res.sendStatus(403);
