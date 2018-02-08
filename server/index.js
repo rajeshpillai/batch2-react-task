@@ -28,7 +28,7 @@ if (!isProduction) {
 
 var homeController = require("./controllers/home");
 
-var db = {
+db = {
     users:[
         {email: "test1@algorisys.com", password: "123"},
         {email: "test2@algorisys.com", password: "123"},
@@ -44,6 +44,8 @@ app.use(function (req, res, next) {
     next();
 });
 
+require('./config/passport');
+
 app.use(require('./routes'));
 
 app.get("/", homeController);
@@ -51,7 +53,6 @@ app.get("/", homeController);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-    
     var err = new Error("Not Found");
     err.status = 404;
     next(err);
