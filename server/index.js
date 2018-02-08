@@ -44,6 +44,8 @@ app.use(function (req, res, next) {
     next();
 });
 
+User = require('./models/user');
+
 require('./config/passport');
 
 app.use(require('./routes'));

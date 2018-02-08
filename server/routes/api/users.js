@@ -19,11 +19,13 @@ router.post('/users/login', function(req, res, next){
 
     passport.authenticate('local', {session: false}, function(err, user, info){
         if(err){ return next(err); }
+        user = new User(user.email, user.password);
+        console.log("User: ", user);
 
         if(user){
-            //user.token = user.generateJWT();
-            //return res.json({user: user.toAuthJSON()});
-            return res.json({user: user});
+            user.token = user.generateJWT();
+            console.log("token: ", user.token);
+            return res.json({user: user.toAuthJSON()});
         } else {
          return res.status(422).json(info);
         }
