@@ -2,9 +2,9 @@ var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 var secret = require('../config').secret;
 
-var User = function (username, email) {
+var User = function (username, password) {
     this.username = username;
-    this.email = email;
+    this.password = password;
 }
 
 User.prototype.generateJWT = function() {
