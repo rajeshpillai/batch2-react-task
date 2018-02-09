@@ -18,7 +18,7 @@ class App extends Component {
       completed: false
     },
     taskModal: false,
-    droppedTask: null
+    droppedTasks: []
   };
 
   constructor() {
@@ -148,8 +148,14 @@ class App extends Component {
 
     var task = this.findTaskById(id);
 
+    var exist = this.state.droppedTasks.find((t) => {
+      return t.id == id;
+    });
+
+    if (exist) return;
+
     this.setState({
-      droppedTask: task
+      droppedTasks: [...this.state.droppedTasks, task]
     })
 
   }
@@ -168,7 +174,6 @@ class App extends Component {
 
   render() {
     var currentModal = this.state.currentModal;
-    var droppedTask = this.state.droppedTask;
 
     var taskUI = this.state.tasks.map((task) => {
         return <li 
@@ -210,8 +215,15 @@ class App extends Component {
           <ColorPicker onColorPick={(e, color)=>this.onColorPick(e,task.id,color)} />
 
         </li>
-        
-    })
+    });
+
+    let droppedTaskUI = this.state.droppedTasks.map((t) => {
+        return (
+            <div key={t.id}>
+                {t.title}
+            </div>
+        );
+    });
     return (
       <div>
         <div className="task-container">
@@ -248,11 +260,7 @@ class App extends Component {
           onDragOver= {(e)=>{this.onDragOver(e)}}
           onDrop = {(e) => {this.onDrop(e)}}>
 
-          {
-            droppedTask && 
-              <h2>{droppedTask.title}</h2>
-            
-          }
+          {droppedTaskUI}
         </div>
 
       </div>

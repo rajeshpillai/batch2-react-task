@@ -10,7 +10,7 @@ export default class ColorPicker extends Component {
     render() {
         var colorUI = this.colors.map((color) => {
             return (
-                <span 
+                <span key={color}
                     onClick={(e)=>{this.onColorPick(e, color)}}
                     style={{backgroundColor: color}} 
                     className="color">
