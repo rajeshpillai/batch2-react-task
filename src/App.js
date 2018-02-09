@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
+import { fetchTasks, addTask, deleteTask, 
+        updateTask, toggleEditTask } 
+        from './actions/index';
 
 import Modal from './components/Modal';
 import ColorPicker from './components/ColorPicker';
-
-import Photo from './components/HOC/Photo';
-import withBorder from './components/HOC/withBorder';
-import withMouse from './components/HOC/withMouse';
-import Mouse from './components/RenderProps/Mouse';
 
 import './App.css';
 
@@ -14,10 +12,10 @@ const uuidv4 = require('uuid/v4');
 
 class App extends Component {
   state = {
-    tasks:[
-      {id: uuidv4(), edit: false, "title": "Learn React", author: "rajesh", completed: false, color:"#E0E0E0"},
-      {id: uuidv4(), edit: false, "title": "Learn Angular", author: "sangram", completed: false,color:"#E0E0E0"},
-    ],
+    // tasks:[
+    //   {id: uuidv4(), edit: false, "title": "Learn React", author: "rajesh", completed: false, color:"#E0E0E0"},
+    //   {id: uuidv4(), edit: false, "title": "Learn Angular", author: "sangram", completed: false,color:"#E0E0E0"},
+    // ],
     task: {
       taskTitle: "",
       author: "",
@@ -27,9 +25,16 @@ class App extends Component {
     droppedTasks: []
   };
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    this.store = this.props.store;
   }
+
+  componentDidMount() {
+    console.log("store: ", this.store);
+    this.store.dispatch(fetchTasks());
+  }
+
   onNewTask() {
     //var input = this.taskInput.value;
     var newTask = {
@@ -42,21 +47,15 @@ class App extends Component {
 
     console.log("newTask: ", newTask);
 
-    this.setState({
-      tasks: [newTask, ...this.state.tasks]
-    });
+    this.store.dispatch(addTask(newTask));
+
+    // this.setState({
+    //   tasks: [newTask, ...this.state.tasks]
+    // });
   }
 
   onTaskDelete (taskId) {
-    //var found = this.findTaskById(taskId);
-
-    let newTasks = this.state.tasks.filter((task) => {
-      return task.id !== taskId;
-    });
-
-    this.setState({
-      tasks: newTasks
-    });
+    this.store.dispatch(deleteTask(taskId));
   }
 
   findTaskById(todoId) {
@@ -72,16 +71,7 @@ class App extends Component {
   }
 
   updateToggleEdit(taskId) {
-    let updatedState = this.state.tasks.map((task) => {
-      if (task.id == taskId) {
-        task.edit = !task.edit;
-      }
-      return task;
-    });
-
-    this.setState({
-      tasks: updatedState
-    });
+    this.store.dispatch(toggleEditTask(taskId));
   }
 
   onChange  = (e) => {
@@ -99,19 +89,12 @@ class App extends Component {
   onTaskKeyUp = (e, taskId) => {
     console.log(e.which);
     if (e.which === 13) {
-      let updatedState = this.state.tasks.map((task) => {
-        if (task.id == taskId) {
-          task.title = this.taskTitleInput.value,
-          task.edit = !task.edit
-        }
-        return task;
-      });
-  
-      this.setState({
-        tasks: updatedState
-      });
-
-      console.log("updated state: ", this.state.tasks);
+      var task = {
+        id: taskId,
+        title: this.taskTitleInput.value,
+        edit: false
+      }
+      this.store.dispatch(updateTask(task));
 
     }else if (e.which === 27) {
       this.updateToggleEdit(taskId);
@@ -179,11 +162,11 @@ class App extends Component {
 
   render() {
     var currentModal = this.state.currentModal;
+    var tasks = this.store.getState().tasks.tasks;
 
-    var BorderedPhoto = withBorder(Photo);
-    var MousePhoto = withMouse(Photo);
+    if (!tasks) return <div>loading...</div>
 
-    var taskUI = this.state.tasks.map((task) => {
+    var taskUI = tasks.map((task) => {
         return <li 
           style={{backgroundColor: task.color}}
           draggable={true}
@@ -220,17 +203,6 @@ class App extends Component {
               show
             </button>
           </div>
-
-
-          {/* <Mouse>
-            {mouse => (
-              <h3>From mouse {mouse.x},{mouse.y}</h3>
-            )}
-          </Mouse> */}
-
-          <Mouse render={(mouse) => (
-            <h3>From mouse {mouse.x},{mouse.y}</h3>
-          )} />
 
           <ColorPicker onColorPick={(e, color)=>this.onColorPick(e,task.id,color)} />
           
@@ -282,8 +254,6 @@ class App extends Component {
           onDragOver= {(e)=>{this.onDragOver(e)}}
           onDrop = {(e) => {this.onDrop(e)}}>
           <header>Backlog</header>
-          <MousePhoto/>
-
           {droppedTaskUI}
         </div>
 

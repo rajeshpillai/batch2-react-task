@@ -32,10 +32,17 @@ db = {
         {email: "test1@algorisys.com", password: "123"},
         {email: "test2@algorisys.com", password: "123"},
     ],
-    tasks: [
-        {id: uuidv4(), edit: false, "title": "Learn React", author: "rajesh", completed: false},
-        {id: uuidv4(), edit: false, "title": "Learn Angular", author: "sangram", completed: false},
-    ]
+    tasks:[
+        {id: uuidv4(), edit: false, "title": "Learn React", author: "rajesh", completed: false, color:"#E0E0E0"},
+        {id: uuidv4(), edit: false, "title": "Learn Angular", author: "sangram", completed: false,color:"#E0E0E0"},
+      ],
+      task: {
+        taskTitle: "",
+        author: "",
+        completed: false
+      },
+      taskModal: false,
+      droppedTasks: []
 };
 
 app.use(function (req, res, next) {
