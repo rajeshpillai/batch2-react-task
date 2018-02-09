@@ -1,0 +1,12 @@
+.color-palette {
+    width: 100%;
+    margin-top:10px;
+}
+
+.color {
+    display: inline-block;
+    width: 25px;
+    height:25px;
+    cursor: pointer;
+    border:1px dotted;
+}

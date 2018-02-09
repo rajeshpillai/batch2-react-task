@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Modal from './components/Modal';
+import ColorPicker from './components/ColorPicker';
 
 import './App.css';
 
@@ -8,8 +9,8 @@ const uuidv4 = require('uuid/v4');
 class App extends Component {
   state = {
     tasks:[
-      {id: uuidv4(), edit: false, "title": "Learn React", author: "rajesh", completed: false},
-      {id: uuidv4(), edit: false, "title": "Learn Angular", author: "sangram", completed: false},
+      {id: uuidv4(), edit: false, "title": "Learn React", author: "rajesh", completed: false, color:"#E0E0E0"},
+      {id: uuidv4(), edit: false, "title": "Learn Angular", author: "sangram", completed: false,color:"#E0E0E0"},
     ],
     task: {
       taskTitle: "",
@@ -29,7 +30,8 @@ class App extends Component {
       id: uuidv4(),
       title: this.state.task.taskTitle,
       author: this.state.task.author,
-      completed: false
+      completed: false,
+      color:"#E0E0E0"
     }
 
     console.log("newTask: ", newTask);
@@ -152,12 +154,25 @@ class App extends Component {
 
   }
 
+  onColorPick = (e, taskId, color) => {
+    let updatedState = this.state.tasks.map((task) => {
+      if (task.id == taskId) {
+        task.color = color;
+      }
+      return task;
+    });
+    this.setState({
+      tasks: updatedState
+    });
+  }
+
   render() {
     var currentModal = this.state.currentModal;
     var droppedTask = this.state.droppedTask;
 
     var taskUI = this.state.tasks.map((task) => {
         return <li 
+          style={{backgroundColor: task.color}}
           draggable={true}
           onDragStart={(e)=> { this.onDragStart(e, task.id)}}
           key={task.id}>
@@ -178,37 +193,43 @@ class App extends Component {
             </span>
           }
 
-          <button type="button" 
-            onClick={(e)=> {this.onTaskDelete(task.id)}}>
-            delete
-          </button>
-          <button type="button" 
-            onClick={(e)=> {this.onToggleEdit(task.id)}}>
-            edit
-          </button>
-          <button type="button" 
-            onClick={(e)=> {this.onShowModal(e,task.id)}}>
-            show
-          </button>
+          <div className="action-buttons">
+            <button type="button" 
+              onClick={(e)=> {this.onTaskDelete(task.id)}}>
+              delete
+            </button>
+            <button type="button" 
+              onClick={(e)=> {this.onToggleEdit(task.id)}}>
+              edit
+            </button>
+            <button type="button" 
+              onClick={(e)=> {this.onShowModal(e,task.id)}}>
+              show
+            </button>
+          </div>
+          <ColorPicker onColorPick={(e, color)=>this.onColorPick(e,task.id,color)} />
+
         </li>
         
     })
     return (
       <div>
-        <h2>Agile Task</h2>
-        <input type="text" placeholder="enter task" 
-          name="taskTitle"
-          value={this.state.task.title}
-          onChange={this.onChange}
-           />
-        <input placeholder="author" type="text" 
-          name="author"
-          onChange={this.onChange}
-          value={this.state.task.author} />
-        <button onClick={(e) => {this.onNewTask()}}>add task</button>
-        <ul>
-          {taskUI}
-        </ul>
+        <div className="task-container">
+          <h2>Agile Task</h2>
+          <input type="text" placeholder="enter task" 
+            name="taskTitle"
+            value={this.state.task.title}
+            onChange={this.onChange}
+            />
+          <input placeholder="author" type="text" 
+            name="author"
+            onChange={this.onChange}
+            value={this.state.task.author} />
+          <button onClick={(e) => {this.onNewTask()}}>add task</button>
+          <ul>
+            {taskUI}
+          </ul>
+        </div>
 
         <Modal show={this.state.taskModal} onClose={this.onShowModal}>
            <div>

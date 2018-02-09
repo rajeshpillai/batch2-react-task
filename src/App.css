@@ -1,10 +1,32 @@
+.task-container {
+    padding: 4px;
+    width: 80%;
+}
+
+.task-container li {
+    list-style-type: none;
+    border-left:25px solid skyblue;
+    padding: 15px;
+    background-color:#E0E0E0;
+    margin-top: 5px;
+    
+}
+
+.action-buttons {
+    padding-top: 15px;
+}
+
 .completed {
     text-decoration-line: line-through;
 }
 
 .completed-tasks {
     background: lightgray;
-    height: 98vh;
-    width: 200px;
-    float: right;
+    height: 100vh;
+    width: 19%;
+    top: 0;
+    position: fixed;
+    right: 0;
+    font-size: 0.8em;
+    padding-left: 2px;
 }
