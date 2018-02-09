@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
+
 import Modal from './components/Modal';
 import ColorPicker from './components/ColorPicker';
+
+import Photo from './components/HOC/Photo';
+import withBorder from './components/HOC/withBorder';
+import withMouse from './components/HOC/withMouse';
+import Mouse from './components/RenderProps/Mouse';
 
 import './App.css';
 
@@ -157,7 +163,6 @@ class App extends Component {
     this.setState({
       droppedTasks: [...this.state.droppedTasks, task]
     })
-
   }
 
   onColorPick = (e, taskId, color) => {
@@ -174,6 +179,9 @@ class App extends Component {
 
   render() {
     var currentModal = this.state.currentModal;
+
+    var BorderedPhoto = withBorder(Photo);
+    var MousePhoto = withMouse(Photo);
 
     var taskUI = this.state.tasks.map((task) => {
         return <li 
@@ -212,8 +220,20 @@ class App extends Component {
               show
             </button>
           </div>
-          <ColorPicker onColorPick={(e, color)=>this.onColorPick(e,task.id,color)} />
 
+
+          {/* <Mouse>
+            {mouse => (
+              <h3>From mouse {mouse.x},{mouse.y}</h3>
+            )}
+          </Mouse> */}
+
+          <Mouse render={(mouse) => (
+            <h3>From mouse {mouse.x},{mouse.y}</h3>
+          )} />
+
+          <ColorPicker onColorPick={(e, color)=>this.onColorPick(e,task.id,color)} />
+          
         </li>
     });
 
@@ -238,6 +258,8 @@ class App extends Component {
             onChange={this.onChange}
             value={this.state.task.author} />
           <button onClick={(e) => {this.onNewTask()}}>add task</button>
+         
+
           <ul>
             {taskUI}
           </ul>
@@ -260,6 +282,7 @@ class App extends Component {
           onDragOver= {(e)=>{this.onDragOver(e)}}
           onDrop = {(e) => {this.onDrop(e)}}>
           <header>Backlog</header>
+          <MousePhoto/>
 
           {droppedTaskUI}
         </div>
