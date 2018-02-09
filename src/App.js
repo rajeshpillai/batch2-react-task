@@ -259,6 +259,7 @@ class App extends Component {
         <div className="completed-tasks"
           onDragOver= {(e)=>{this.onDragOver(e)}}
           onDrop = {(e) => {this.onDrop(e)}}>
+          <header>Backlog</header>
 
           {droppedTaskUI}
         </div>

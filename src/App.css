@@ -1,9 +1,13 @@
 .task-container {
-    padding: 4px;
+    padding: 15px;
     width: 80%;
 }
 
+.task-container ul {
+    padding: 0;
+}
 .task-container li {
+    width: 70%;
     list-style-type: none;
     border-left:25px solid skyblue;
     padding: 15px;
@@ -29,4 +33,11 @@
     right: 0;
     font-size: 0.8em;
     padding-left: 2px;
+}
+
+.completed-tasks header {
+    padding: 5px;
+    font-size: 1.3em;
+    background-color:skyblue;
+    font-weight: bold;
 }
