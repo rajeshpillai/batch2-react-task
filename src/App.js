@@ -59,7 +59,7 @@ class App extends Component {
   }
 
   findTaskById(todoId) {
-    let found = this.state.tasks.find((task) => {
+    let found = this.store.getState().tasks.tasks.find((task) => {
       return task.id == todoId;
     })
 
