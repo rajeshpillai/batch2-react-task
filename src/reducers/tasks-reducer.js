@@ -7,10 +7,7 @@ export default function(state = [], action) {
   switch (action.type) {
     case FETCH_TASKS:
       console.log("fetching tasks...", action.payload);
-      return {
-        ...state,
-        tasks: action.payload
-      };
+      return action.payload
 
     case ADD_TASK:
       console.log("adding tasks...", action.payload);
@@ -26,31 +23,24 @@ export default function(state = [], action) {
         }
         return task;
       });
-      return {
-        ...state,
-        tasks: [...updatedTasks]
-      };  
+      return updatedTasks;
+
     case UPDATE_TASK:
       console.log("UPDATE_TASK: ",  action.payload.task);
-      var updatedTasks = state.tasks.map((task) => {
+      var updatedTasks = state.map((task) => {
         if (task.id == action.payload.task.id) {
           task.edit = false;
           task.title = action.payload.task.title;
         }
         return task;
       });
-      return {
-        tasks: [...updatedTasks]
-      };  
+      return updatedTasks;
 
     case DELETE_TASK:
-      var updatedTasks = state.tasks.filter((task) => {
+      var updatedTasks = state.filter((task) => {
         return task.id !== action.payload.id;
       });
-      return {
-        ...state,
-        tasks: [...updatedTasks]
-      };  
+      return updatedTasks;  
     default:
       return state;
   }

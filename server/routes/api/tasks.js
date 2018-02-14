@@ -3,6 +3,7 @@ var router = require('express').Router();
 // Get all tasks
 router.get("/tasks", function (req, res) {
     let db = req.db;
+    console.log("Sending..", db.tasks);
     res.json(db.tasks);
 });
 

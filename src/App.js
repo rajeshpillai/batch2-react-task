@@ -164,10 +164,11 @@ class App extends Component {
     this.store = this.props.store;
     var currentModal = this.state.currentModal;
     var tasks = this.store.getState().tasks;
-
-    if (!tasks && tasks.length === 0) return <div>loading...</div>
-
+    
     console.log("before error: ", tasks);
+
+    if (tasks  && tasks.length === 0) return <div>loading...</div>
+
 
     var taskUI = tasks.map((task) => {
         return <li 
