@@ -11,10 +11,8 @@ export default function(state = [], action) {
 
     case ADD_TASK:
       console.log("adding tasks...", action.payload);
-      return {
-        ...state,
-        tasks: [...state.tasks, action.payload.task]
-      };
+      return [...state, action.payload.task];
+
     case TOGGLE_EDIT_TASK:
       console.log("toggle edit...", action.payload.id, state);
       var updatedTasks = state.map((task) => {
