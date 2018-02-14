@@ -1,5 +1,5 @@
 import { FETCH_TASKS, ADD_TASK,UPDATE_TASK,
-    DELETE_TASK, TOGGLE_EDIT_TASK } 
+    DELETE_TASK, TOGGLE_EDIT_TASK , TOGGLE_COMPLETE} 
     from '../actions/types';
 
 export default function(state = [], action) {
@@ -20,6 +20,16 @@ export default function(state = [], action) {
       var updatedTasks = state.map((task) => {
         if (task.id == action.payload.id) {
           task.edit = !task.edit;
+        }
+        return task;
+      });
+      return updatedTasks;
+
+    case TOGGLE_COMPLETE:
+      console.log("toggle complete...", action.payload, state);
+      var updatedTasks = state.map((task) => {
+        if (task.id == action.payload) {
+          task.completed = !task.completed;
         }
         return task;
       });

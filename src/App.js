@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { fetchTasks, addTask, deleteTask, 
-        updateTask, toggleEditTask } 
+        updateTask, toggleEditTask, toggleComplete } 
         from './actions/index';
 
 import Modal from './components/Modal';
@@ -102,15 +102,7 @@ class App extends Component {
   }
 
   onToggleComplete = (taskId) => {
-    let updatedState = this.state.tasks.map((task) => {
-      if (task.id == taskId) {
-        task.completed = !task.completed
-      }
-      return task;
-    });
-    this.setState({
-      tasks: updatedState
-    });
+    this.store.dispatch(toggleComplete(taskId));
   }
 
   onShowModal = (e, taskId) => {

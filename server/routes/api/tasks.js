@@ -7,6 +7,11 @@ router.get("/tasks", function (req, res) {
     res.json(db.tasks);
 });
 
+// Toggle task
+router.put("/task/toggle/:id", function (req, res) {
+    console.log("toggle todo with id: ", req.params.id);
+    res.json(req.params.id);
+});
 
 // Delete tasks by id
 router.delete("/task/:id", function (req, res) {
@@ -22,7 +27,6 @@ router.put("/task/", function (req, res) {
 
 // Toggle Edit task
 router.put("/task/toggle/:id", function (req, res) {
-    let db = req.db;
     var task = db.tasks.find((task) => {
         return task.id == req.params.id;
     });

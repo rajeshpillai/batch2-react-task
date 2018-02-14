@@ -4,7 +4,8 @@ import {
         ADD_TASK, 
         DELETE_TASK, 
         UPDATE_TASK,
-        TOGGLE_EDIT_TASK} 
+        TOGGLE_EDIT_TASK,
+        TOGGLE_COMPLETE} 
     from './types';
 
 const API_URL = "/api/tasks";
@@ -34,4 +35,9 @@ export const toggleEditTask = (taskId) => async dispatch => {
 export const updateTask = (task) => async dispatch => {
     const res = await axios.put('/api/task/', {task: task});
     dispatch({ type: UPDATE_TASK, payload: res.data });
+};
+
+export const toggleComplete = (taskId) => async dispatch => {
+    const res = await axios.put('/api/task/toggle/' + taskId);
+    dispatch({ type: TOGGLE_COMPLETE, payload: res.data });
 };
