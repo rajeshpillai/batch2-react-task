@@ -27,7 +27,7 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.store = this.props.store;
+    
   }
 
   componentDidMount() {
@@ -59,7 +59,7 @@ class App extends Component {
   }
 
   findTaskById(todoId) {
-    let found = this.store.getState().tasks.tasks.find((task) => {
+    let found = this.store.getState().tasks.find((task) => {
       return task.id == todoId;
     })
 
@@ -161,10 +161,13 @@ class App extends Component {
   }
 
   render() {
+    this.store = this.props.store;
     var currentModal = this.state.currentModal;
-    var tasks = this.store.getState().tasks.tasks;
+    var tasks = this.store.getState().tasks;
 
-    if (!tasks) return <div>loading...</div>
+    if (!tasks && tasks.length === 0) return <div>loading...</div>
+
+    console.log("before error: ", tasks);
 
     var taskUI = tasks.map((task) => {
         return <li 
