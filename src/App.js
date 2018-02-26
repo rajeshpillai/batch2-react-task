@@ -141,7 +141,7 @@ class App extends Component {
   }
 
   onColorPick = (e, taskId, color) => {
-    let updatedState = this.state.tasks.map((task) => {
+    let updatedState = this.store.getState().tasks.map((task) => {
       if (task.id == taskId) {
         task.color = color;
       }
