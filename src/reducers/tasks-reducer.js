@@ -14,9 +14,9 @@ export default function(state = [], action) {
       return [...state, action.payload.task];
 
     case TOGGLE_EDIT_TASK:
-      console.log("toggle edit...", action.payload.id, state);
+      console.log("toggle edit...", action.payload, state);
       var updatedTasks = state.map((task) => {
-        if (task.id == action.payload.id) {
+        if (task.id == action.payload) {
           task.edit = !task.edit;
         }
         return task;
