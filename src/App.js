@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
 import { fetchTasks, addTask, deleteTask, 
         updateTask, toggleEditTask, toggleComplete } 
         from './actions/index';
@@ -227,9 +229,13 @@ class App extends Component {
             value={this.state.task.author} />
           <button onClick={(e) => {this.onNewTask()}}>add task</button>
          
-
-          <ul>
-            {taskUI}
+          <ul className="task">
+            <ReactCSSTransitionGroup
+              transitionName="task"
+              transitionEnterTimeout={500}
+              transitionLeaveTimeout={300}>
+              {taskUI}
+            </ReactCSSTransitionGroup>
           </ul>
         </div>
 
